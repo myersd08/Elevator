@@ -1,5 +1,5 @@
 ## Elevator Program
-This program simulates and elevator
+This program simulates an elevator
 - The elevator can be programmed for how many floors, capacity and speed.
 - When the elevator is on a current floor, it can pick up passengers that are on that floor by typing a destination floor number (assumes starting floor is the current floor)
 - The elevator can be called from other floors to specify the starting floor and the destination floor.  These are maintained in a separate queue and added to the passengers queue when they are picked up.
