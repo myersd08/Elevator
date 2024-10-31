@@ -1,4 +1,3 @@
-
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
@@ -177,5 +176,87 @@ public class ElevatorControllerTest {
         assertEquals(false, controller.elevatorIsFull());
         assertEquals(true, controller.elevatorIsEmpty());
         assertEquals(0, controller.getElevatorPassengerCount());
+    }
+
+    @Test
+    public void testElevatorIdling() {
+        // Test that elevator stays idle when no requests
+        assertEquals(1, controller.getCurrentFloor());
+        controller.move();
+        assertEquals(1, controller.getCurrentFloor());
+        
+        // Add passenger and complete their journey
+        controller.addPassenger(5);
+        controller.move();
+        assertEquals(5, controller.getCurrentFloor());
+        
+        // Should remain at last served floor when idle
+        controller.move();
+        assertEquals(5, controller.getCurrentFloor());
+    }
+
+    @Test
+    public void testPickupAndDropoffOrder() {
+        // Test pickup and dropoff sequence
+        controller.addPassenger(3); // First passenger going to 3
+        controller.addPassenger(6); // Second passenger going to 6
+        controller.addPassenger(2); // Third passenger going to 2
+        
+        controller.move();
+        assertEquals(2, controller.getCurrentFloor());
+        
+        controller.move();
+        assertEquals(3, controller.getCurrentFloor());
+        
+        controller.move();
+        assertEquals(6, controller.getCurrentFloor());
+        assertEquals(0, controller.getElevatorPassengerCount());
+    }
+
+    @Test
+    public void testCapacityEdgeCases() {
+        // Fill to capacity minus 1
+        for (int i = 0; i < CAPACITY - 1; i++) {
+            controller.addPassenger(5);
+        }
+        
+        assertFalse(controller.elevatorIsFull());
+        assertEquals(CAPACITY - 1, controller.getElevatorPassengerCount());
+        
+        // Add one more to reach capacity
+        controller.addPassenger(5);
+        assertTrue(controller.elevatorIsFull());
+        assertEquals(CAPACITY, controller.getElevatorPassengerCount());
+    }
+
+    @Test
+    public void testDirectionChangeWithMultiplePassengers() {
+        // Test direction changes with multiple passengers
+        controller.addPassenger(8); // Going up to 8
+        controller.move();
+        assertEquals(8, controller.getCurrentFloor());
+        assertEquals(Direction.UP, controller.getCurrentDirection());
+        
+        controller.addPassenger(3); // Going down to 3
+        controller.addPassenger(2); // Going down to 2
+        controller.move();
+        assertEquals(3, controller.getCurrentFloor());
+        assertEquals(Direction.DOWN, controller.getCurrentDirection());
+        
+        controller.move();
+        assertEquals(2, controller.getCurrentFloor());
+    }
+
+    @Test
+    public void testBoundaryFloors() {
+        // Test behavior at boundary floors
+        controller.addPassenger(TOTAL_FLOORS); // Go to top floor
+        controller.move();
+        assertEquals(TOTAL_FLOORS, controller.getCurrentFloor());
+        
+        controller.addPassenger(1); // Go to bottom floor
+        controller.move();
+        assertEquals(1, controller.getCurrentFloor());
+        assertEquals(Direction.DOWN, controller.getCurrentDirection());
     }
 }

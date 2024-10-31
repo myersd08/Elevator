@@ -74,11 +74,11 @@ class ElevatorController {
             return;
         }
         if (destinationFloor == currentFloor) {
-            System.out.println("You are already on this floor, maybe just go to the room you are wanting to go to.");
+            System.out.println(Colors.ANSI_YELLOW + "You are already on this floor, maybe just go to the room you are wanting to go to?" + Colors.ANSI_RESET);
             return;
         }
         if (destinationFloor > topFloor || destinationFloor < 1) {
-            System.out.println("That floor is not in this building.");
+            System.out.println(Colors.ANSI_RED + "That floor is not in this building." + Colors.ANSI_RESET);
             return;
         }
 
