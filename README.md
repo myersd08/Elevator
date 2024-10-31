@@ -10,6 +10,7 @@ This program simulates an elevator
 - This programs includes some tests, but more tests should be added
 
 *** The elevator program has a speed control function that has the elevator accelerate and decelerate
+
 *** Messages are color coded in the console to make it easier to read
 
 ## Additional Features/Ideas
